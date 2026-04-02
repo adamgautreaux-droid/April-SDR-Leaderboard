@@ -1,1 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDR Leaderboard — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --dark-bg:#050d1a;
+  --dark-panel:#0a1628;
+  --dark-panel2:#0d1f38;
+  --dark-border:rgba(0,102,255,0.22);
+  --light-bg:#eef1f7;
+  --light-card:#ffffff;
+  --light-border:#dde3ef;
+  --light-border2:#c8d2e8;
+  --text-primary:#0d1a2e;
+  --text-secondary:#4a5878;
+  --text-dim:#8a96b0;
+  --blue:#1a7fff;
+  --blue2:#0055cc;
+  --cyan:#00b4ff;
+  --green:#00c96b;
+  --red:#e8294a;
+  --r1:#00b4ff;
+  --r2:#0d1a2e;
+  --r3:#1a7fff;
+}
 
+/* DARK CHROME */
+body{font-family:"Barlow",sans-serif;background-color:var(--dark-bg);color:#ffffff;min-height:100vh;}
+.chrome{
+  background-color:var(--dark-bg);
+  background-image:linear-gradient(rgba(0,102,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,102,255,0.05) 1px,transparent 1px),radial-gradient(ellipse 80% 60% at 50% -5%,rgba(0,80,200,0.2) 0%,transparent 70%);
+  background-size:40px 40px,40px 40px,100% 100%;
+  padding:20px 16px 28px;
+}
+.wrap{max-width:940px;margin:0 auto;}
+
+/* DIVIDER */
+.chrome-end{
+  height:4px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent);
+  opacity:0.5;
+}
+
+/* LIGHT CARD SECTION */
+.card-section{
+  background:var(--light-bg);
+  padding:20px 16px 60px;
+}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(0,180,255,0.2);padding-bottom:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.eyebrow{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.35em;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:"";display:inline-block;width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+h1{font-family:"Rajdhani",sans-serif;font-size:clamp(34px,7vw,64px);font-weight:700;line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#ffffff;}
+h1 span{color:var(--cyan);}
+.header-right{text-align:right;font-family:"Share Tech Mono",monospace;font-size:11px;color:rgba(255,255,255,0.5);line-height:2;}
+.header-right span{color:#ffffff;}
+
+/* METRIC CARDS — dark */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-bottom:8px;}
+.mc{background:var(--dark-panel);border:1px solid var(--dark-border);padding:14px 16px;position:relative;overflow:hidden;}
+.mc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;}
+.mc-rev::before{background:linear-gradient(90deg,var(--cyan),var(--blue));}
+.mc-cls::before{background:linear-gradient(90deg,#e8294a,#990022);}
+.mc-sets::before{background:linear-gradient(90deg,var(--blue),#003399);}
+.mc-avg::before{background:linear-gradient(90deg,#00c96b,#006633);}
+.mc-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.25em;color:rgba(255,255,255,0.5);margin-bottom:6px;}
+.mc-val{font-family:"Rajdhani",sans-serif;font-size:clamp(24px,4vw,34px);font-weight:700;line-height:1;color:#ffffff;}
+
+/* PACE — dark */
+.pace{background:var(--dark-panel);border:1px solid var(--dark-border);padding:14px 18px;margin-bottom:16px;}
+.pace-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.3em;color:var(--cyan);margin-bottom:8px;}
+.pace-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+.pace-title{font-family:"Rajdhani",sans-serif;font-size:clamp(15px,3vw,21px);font-weight:600;color:#ffffff;}
+.pace-stats{display:flex;gap:24px;flex-wrap:wrap;}
+.ps-val{font-family:"Rajdhani",sans-serif;font-size:22px;font-weight:700;color:var(--cyan);display:block;}
+.ps-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,0.5);}
+.pbar-bg{height:4px;background:rgba(255,255,255,0.08);}
+.pbar-fg{height:100%;background:linear-gradient(90deg,var(--blue2),var(--cyan));transition:width 1.2s ease;box-shadow:0 0 10px rgba(0,180,255,0.4);}
+
+/* SCORING KEY — dark */
+.scoring-key{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.sk-item{flex:1;min-width:70px;background:var(--dark-panel);border:1px solid var(--dark-border);padding:10px 12px;display:flex;align-items:center;gap:8px;}
+.sk-num{font-family:"Rajdhani",sans-serif;font-size:22px;font-weight:700;}
+.sk-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,0.5);line-height:1.6;}
+.sk-note{flex:2;min-width:140px;background:transparent;border:1px solid rgba(255,255,255,0.1);padding:10px 14px;display:flex;align-items:center;}
+.sk-note-text{font-family:"Share Tech Mono",monospace;font-size:10px;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+/* SPOTLIGHT — dark */
+.spotlight{background:linear-gradient(135deg,rgba(0,100,220,0.2),rgba(0,20,60,0.9));border:1px solid rgba(0,180,255,0.3);padding:14px 18px;margin-bottom:0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.spotlight-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.3em;color:var(--cyan);margin-bottom:4px;}
+.spotlight-name{font-family:"Rajdhani",sans-serif;font-size:22px;font-weight:700;color:#ffffff;}
+.spotlight-stat{font-family:"Share Tech Mono",monospace;font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.spotlight-score-val{font-family:"Rajdhani",sans-serif;font-size:36px;font-weight:700;color:var(--cyan);line-height:1;}
+.spotlight-score-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.2em;}
+
+/* TABS — on the light section */
+.tabs{display:flex;border-bottom:2px solid var(--light-border2);margin-bottom:20px;overflow-x:auto;}
+.tab{cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;font-family:"Share Tech Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:12px 18px;color:var(--text-dim);transition:all .2s;margin-bottom:-2px;white-space:nowrap;}
+.tab:hover{color:var(--text-primary);}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue);}
+.sec{display:none;}.sec.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* REP CARDS — light */
+.rep-card{
+  background:var(--light-card);
+  border:1px solid var(--light-border);
+  border-left:3px solid var(--light-border2);
+  margin-bottom:6px;
+  animation:fadeUp .4s ease forwards;
+  opacity:0;
+  box-shadow:0 1px 3px rgba(13,26,46,0.06);
+  transition:box-shadow .2s;
+}
+.rep-card:hover{box-shadow:0 4px 12px rgba(13,26,46,0.1);}
+.rep-card.rank-1{border-left-color:var(--cyan);background:linear-gradient(135deg,rgba(0,180,255,0.04),#ffffff);}
+.rep-card.rank-2{border-left-color:var(--text-primary);}
+.rep-card.rank-3{border-left-color:var(--blue);}
+.rep-card.inactive{background:#f7f9fc;border-color:#e8ecf4;border-left-color:#e8ecf4;box-shadow:none;}
+.rep-top{display:grid;grid-template-columns:52px 1fr auto;gap:0 12px;padding:14px 16px 0;align-items:start;}
+.rep-rank{font-family:"Rajdhani",sans-serif;font-size:30px;font-weight:700;line-height:1;padding-top:2px;}
+.rep-name{font-family:"Rajdhani",sans-serif;font-size:20px;font-weight:600;line-height:1;margin-bottom:3px;color:var(--text-primary);}
+.rep-team{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.15em;color:var(--text-dim);}
+.rep-pace{display:inline-block;font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.12em;padding:2px 7px;margin-left:8px;vertical-align:middle;border-radius:2px;}
+.pace-on{background:rgba(0,201,107,0.1);color:var(--green);border:1px solid rgba(0,201,107,0.3);}
+.pace-behind{background:rgba(232,41,74,0.08);color:var(--red);border:1px solid rgba(232,41,74,0.2);}
+.rep-score-col{text-align:right;}
+.rep-score{font-family:"Rajdhani",sans-serif;font-size:34px;font-weight:700;line-height:1;}
+.rep-score-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.2em;color:var(--text-dim);margin-top:2px;}
+.rep-bar-wrap{padding:8px 16px 0;}
+.rep-bar-bg{height:2px;background:#eef1f7;}
+.rep-bar-fg{height:100%;transition:width .9s ease;}
+.rep-stats{display:flex;flex-wrap:wrap;padding:10px 16px;}
+.rep-stat{padding:4px 14px 4px 0;min-width:80px;}
+.stat-val{font-family:"Rajdhani",sans-serif;font-size:16px;font-weight:600;color:var(--text-primary);}
+.stat-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--text-dim);}
+.rep-gap{padding:8px 16px 12px;border-top:1px solid var(--light-border);}
+.gap-leading{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--green);}
+.gap-behind{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);}
+.gap-action{font-family:"Barlow",sans-serif;font-size:12px;font-weight:600;margin-top:3px;color:var(--text-primary);}
+.gap-action em{color:var(--blue);font-style:normal;}
+.rep-inactive-msg{padding:10px 16px 14px;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);letter-spacing:.05em;}
+.rep-inactive-cta{font-family:"Rajdhani",sans-serif;font-size:14px;font-weight:600;color:var(--blue);margin-top:4px;}
+.zero-header{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.3em;color:var(--text-dim);margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--light-border2);}
+
+/* TEAMS — light */
+.ts-title{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.28em;color:var(--blue);margin-bottom:10px;}
+.ts-card{background:var(--light-card);border:1px solid var(--light-border);border-left:3px solid var(--light-border2);display:grid;grid-template-columns:42px 1fr auto;gap:0 12px;padding:14px 16px;margin-bottom:6px;animation:fadeUp .35s ease forwards;opacity:0;align-items:center;box-shadow:0 1px 3px rgba(13,26,46,0.06);}
+.ts-rank{font-family:"Rajdhani",sans-serif;font-size:24px;font-weight:700;}
+.ts-name{font-family:"Rajdhani",sans-serif;font-size:17px;font-weight:600;margin-bottom:3px;color:var(--text-primary);}
+.ts-meta{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--text-dim);}
+.ts-avgs{display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;}
+.ts-avg-val{font-family:"Rajdhani",sans-serif;font-size:14px;font-weight:600;color:var(--text-primary);}
+.ts-avg-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--text-dim);}
+.ts-score{font-family:"Rajdhani",sans-serif;font-size:26px;font-weight:700;text-align:right;}
+.ts-score-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.15em;color:var(--text-dim);margin-top:2px;text-align:right;}
+.ts-bar-row{grid-column:1/-1;margin-top:8px;}
+.ts-bar-bg{height:2px;background:#eef1f7;}
+.ts-bar-fg{height:100%;transition:width .9s ease;}
+.team-detail-title{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.28em;color:var(--text-dim);margin:20px 0 10px;}
+.tc{background:var(--light-card);border:1px solid var(--light-border);margin-bottom:8px;overflow:hidden;animation:fadeUp .4s ease forwards;opacity:0;box-shadow:0 1px 3px rgba(13,26,46,0.06);}
+.tc-head{background:#f7f9fc;padding:14px 18px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--light-border);}
+.tc-title{font-family:"Rajdhani",sans-serif;font-size:18px;font-weight:700;color:var(--text-primary);}
+.tc-badge{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.18em;color:var(--text-dim);margin-top:3px;}
+.tc-totals{display:flex;gap:18px;flex-wrap:wrap;}
+.tc-tot-val{font-family:"Rajdhani",sans-serif;font-size:16px;font-weight:700;color:var(--blue);display:block;}
+.tc-tot-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--text-dim);}
+.tc-avgs-row{display:grid;grid-template-columns:repeat(3,1fr);background:#f7f9fc;border-bottom:1px solid var(--light-border);}
+.tc-avg-cell{padding:9px 14px;text-align:center;border-right:1px solid var(--light-border);}
+.tc-avg-cell:last-child{border-right:none;}
+.tc-avg-val{font-family:"Rajdhani",sans-serif;font-size:15px;font-weight:700;color:var(--text-primary);}
+.tc-avg-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--text-dim);margin-top:1px;}
+.tc-member{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--light-border);}
+.tc-member:last-child{border-bottom:none;}
+.tc-m-name{font-family:"Rajdhani",sans-serif;font-size:15px;font-weight:500;flex:1;color:var(--text-primary);}
+.tc-m-stats{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--text-dim);flex:1;text-align:right;}
+.tc-m-score{font-family:"Rajdhani",sans-serif;font-size:15px;font-weight:700;color:var(--blue);min-width:46px;text-align:right;}
+.tc-m-score-lbl{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--text-dim);margin-left:2px;}
+
+/* HOW TO WIN — mixed */
+.htw-hero{background:linear-gradient(135deg,rgba(0,60,180,0.15),rgba(0,20,60,0.85));border:1px solid rgba(0,180,255,0.25);padding:28px 24px;margin-bottom:14px;position:relative;overflow:hidden;}
+.htw-hero::before{content:"DIAL. BOOK. CLOSE. WIN.";position:absolute;bottom:-10px;right:-10px;font-family:"Rajdhani",sans-serif;font-size:80px;font-weight:700;color:rgba(0,100,255,0.06);letter-spacing:.05em;white-space:nowrap;pointer-events:none;}
+.htw-hero-eye{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.35em;color:var(--cyan);margin-bottom:8px;}
+.htw-hero-title{font-family:"Rajdhani",sans-serif;font-size:clamp(28px,5.5vw,46px);font-weight:700;line-height:1.1;margin-bottom:10px;text-transform:uppercase;color:#ffffff;}
+.htw-hero-title span{color:var(--cyan);}
+.htw-hero-sub{font-family:"Barlow",sans-serif;font-size:14px;color:rgba(255,255,255,0.6);line-height:1.7;max-width:540px;}
+.htw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.htw-card{background:var(--light-card);border:1px solid var(--light-border);border-top:3px solid;padding:18px;box-shadow:0 1px 3px rgba(13,26,46,0.06);}
+.htw-card-weight{font-family:"Rajdhani",sans-serif;font-size:42px;font-weight:700;line-height:1;}
+.htw-card-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.25em;color:var(--text-dim);margin:4px 0 10px;}
+.htw-card-tip{font-family:"Barlow",sans-serif;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.htw-card-tip strong{display:block;color:var(--text-primary);margin-bottom:4px;}
+.htw-rule{background:var(--light-card);border:1px solid var(--light-border);padding:18px 22px;margin-bottom:8px;box-shadow:0 1px 3px rgba(13,26,46,0.06);}
+.htw-rule-title{font-family:"Rajdhani",sans-serif;font-size:17px;font-weight:600;margin-bottom:8px;color:var(--text-primary);}
+.htw-rule-body{font-family:"Barlow",sans-serif;font-size:13px;color:var(--text-secondary);line-height:1.7;}
+.htw-rule-body strong{color:var(--text-primary);}
+.htw-example{background:#f0f6ff;border:1px solid #c8d8f0;padding:18px 22px;margin-bottom:14px;}
+.htw-example-title{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.28em;color:var(--blue);margin-bottom:12px;}
+.htw-ex-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--light-border);padding:9px 0;flex-wrap:wrap;gap:4px;}
+.htw-ex-row:last-child{border-bottom:none;}
+.htw-ex-name{font-family:"Rajdhani",sans-serif;font-size:15px;font-weight:500;color:var(--text-primary);}
+.htw-ex-stats{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--text-dim);}
+.htw-ex-score{font-family:"Rajdhani",sans-serif;font-size:22px;font-weight:700;color:var(--blue);}
+.htw-cta{border:1px solid rgba(0,180,255,0.3);background:linear-gradient(135deg,rgba(0,80,200,0.08),rgba(0,40,120,0.04));padding:24px;text-align:center;}
+.htw-cta-title{font-family:"Rajdhani",sans-serif;font-size:clamp(20px,4vw,30px);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary);}
+.htw-cta-title span{color:var(--blue);}
+.htw-cta-body{font-family:"Barlow",sans-serif;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--light-border2);margin-top:40px;padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.fl{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);letter-spacing:.15em;}
+.fr{font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text-dim);letter-spacing:.1em;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .htw-cards{grid-template-columns:1fr;}
+  .tc-avgs-row{grid-template-columns:1fr 1fr;}
+  .tc-avg-cell:last-child{grid-column:1/-1;border-top:1px solid var(--light-border);border-right:none;}
+  .tabs{overflow-x:auto;}
+  .rep-top{grid-template-columns:38px 1fr auto;}
+  .ts-card{grid-template-columns:34px 1fr auto;}
+  .pace-stats{gap:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- DARK CHROME -->
+<div class="chrome">
+<div class="wrap">
+  <div class="header">
+    <div>
+      <div class="eyebrow">SDR PERFORMANCE &middot; SETTER DIVISION &middot; LIVE</div>
+      <h1 id="hMonth"></h1>
+    </div>
+    <div class="header-right" id="hMeta"></div>
+  </div>
+  <div class="metrics" id="metricCards"></div>
+  <div class="pace">
+    <div class="pace-lbl">MONTHLY GOAL PACE &mdash; TARGET $1,250,000</div>
+    <div class="pace-row"><div class="pace-title" id="paceTitle"></div><div class="pace-stats" id="paceStats"></div></div>
+    <div class="pbar-bg"><div class="pbar-fg" id="paceFill" style="width:0%"></div></div>
+  </div>
+  <div class="scoring-key" id="scoringKey"></div>
+  <div class="spotlight" id="spotlight"></div>
+</div>
+</div>
+
+<!-- DIVIDER -->
+<div class="chrome-end"></div>
+
+<!-- LIGHT CARD SECTION -->
+<div class="card-section">
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" onclick="show('board',this)">&#9658; OVERALL RANK</button>
+    <button class="tab" onclick="show('teams',this)">&#9658; TEAMS</button>
+    <button class="tab" onclick="show('howtowin',this)">&#9658; HOW TO WIN</button>
+  </div>
+  <div id="board" class="sec on"></div>
+  <div id="teams" class="sec"></div>
+  <div id="howtowin" class="sec"></div>
+  <div class="footer"><div class="fl" id="footerL"></div><div class="fr">DIAL. BOOK. CLOSE. WIN.</div></div>
+</div>
+</div>
+
+<script>
+var DATA = {
+  month:"April 2026", workDay:1, workDaysTotal:22, goal:1250000,
+  updatedAt:"Wed Apr 2, 2026",
+  reps:[
+    {name:"Gloria",              rev:15000, cls:1, sets:7,  cc:0},
+    {name:"Brent Jackman",       rev:12000, cls:1, sets:2,  cc:0},
+    {name:"Kenny",               rev:0,     cls:0, sets:2,  cc:0},
+    {name:"Jesse Saunders",      rev:0,     cls:0, sets:5,  cc:0},
+    {name:"Petros Foustanellas", rev:0,     cls:0, sets:3,  cc:0},
+    {name:"Suraj Bali",          rev:0,     cls:0, sets:3,  cc:0},
+    {name:"Paolo Kuizon",        rev:0,     cls:0, sets:3,  cc:0},
+    {name:"TJ Miller",           rev:0,     cls:0, sets:1,  cc:0},
+    {name:"Samuel Michalcin",    rev:0,     cls:0, sets:1,  cc:0},
+    {name:"Angelo Stringfellow", rev:0,     cls:0, sets:1,  cc:0},
+    {name:"Harvey",              rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Daniel Jordan",       rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Jose Bernal",         rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Caroline",            rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Songo",               rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Saray Cortes",        rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Habib Fazli",         rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Shivang Kapoor",      rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Ben",                 rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Emery Sage",          rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Andy Perez",          rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Dante N",             rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Tom",                 rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Ian Hukom",           rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Enkhuu",              rev:0,     cls:0, sets:0,  cc:0},
+    {name:"Sofia Gonzalez",      rev:0,     cls:0, sets:0,  cc:0}
+  ]
+};
+var TEAMS=[
+  {name:"Team 1",  members:["Dante N","Tom"]},
+  {name:"Team 2",  members:["Brent Jackman","Jose Bernal","Daniel Jordan"]},
+  {name:"Team 3",  members:["TJ Miller"]},
+  {name:"Team 4",  members:["Gloria","Emery Sage","Kenny","Sofia Gonzalez"]},
+  {name:"Team 5",  members:["Andy Perez"]},
+  {name:"Team 6",  members:["Caroline","Habib Fazli","Shivang Kapoor","Songo","Paolo Kuizon","Enkhuu"]},
+  {name:"Team 7",  members:["Ben","Samuel Michalcin","Suraj Bali","Ian Hukom"]},
+  {name:"Team 8",  members:["Harvey","Petros Foustanellas","Saray Cortes"]},
+  {name:"Team 9",  members:["Jesse Saunders"]},
+  {name:"Team 10", members:["Angelo Stringfellow"]}
+];
+var KPI_REV_MONTH=100000;
+function $(id){return document.getElementById(id);}
+function fmt$(n){return(n!=null&&n!=="")?"$"+Math.round(n).toLocaleString():"--";}
+function fmtP(n){return n!=null?n.toFixed(1)+"%":"--";}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+var RC=["var(--cyan)","var(--text-primary)","var(--blue)"];
+function rc(i){return i<RC.length?RC[i]:"var(--text-dim)";}
+function show(id,btn){document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on");});document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});$(id).classList.add("on");btn.classList.add("on");}
+
+var active=DATA.reps.filter(function(r){return r.rev>0||r.cls>0||r.sets>0;});
+var mR=Math.max.apply(null,active.map(function(r){return r.rev;}).concat([1]));
+var mC=Math.max.apply(null,active.map(function(r){return r.cls;}).concat([1]));
+var mS=Math.max.apply(null,active.map(function(r){return r.sets;}).concat([1]));
+function calcScore(r){return Math.round((r.rev/mR*100)*.35+(r.cls/mC*100)*.30+(r.sets/mS*100)*.35);}
+var scoredActive=active.map(function(r){return{name:r.name,rev:r.rev,cls:r.cls,sets:r.sets,score:calcScore(r),rpc:r.cls>0?Math.round(r.rev/r.cls):null,cr:r.sets>0?r.cls/r.sets*100:null};}).sort(function(a,b){return b.score-a.score||a.name.localeCompare(b.name);});
+var zeroReps=DATA.reps.filter(function(r){return r.rev===0&&r.cls===0&&r.sets===0;});
+var repMap={};
+scoredActive.forEach(function(r){repMap[r.name]=r;});
+zeroReps.forEach(function(r){repMap[r.name]={name:r.name,rev:0,cls:0,sets:0,score:0};});
+var totRev=scoredActive.reduce(function(s,r){return s+r.rev;},0);
+var totCls=scoredActive.reduce(function(s,r){return s+r.cls;},0);
+var totSet=scoredActive.reduce(function(s,r){return s+r.sets;},0);
+var pct=totRev/DATA.goal*100;
+var dLeft=DATA.workDaysTotal-DATA.workDay;
+var needed=dLeft>0?Math.ceil((DATA.goal-totRev)/dLeft):0;
+
+var parts=DATA.month.split(" ");
+$("hMonth").innerHTML=parts[0]+" <span>"+parts[1]+"</span>";
+$("hMeta").innerHTML=DATA.updatedAt.toUpperCase()+"<br>WORK DAY <span>"+DATA.workDay+"</span> OF <span>"+DATA.workDaysTotal+"</span>";
+
+var activeClosers=scoredActive.filter(function(r){return r.rev>0;}).length;
+var avgRev=activeClosers>0?Math.round(totRev/activeClosers):0;
+[["&#x1F4B0;","REVENUE MTD",fmt$(totRev),"mc-rev","var(--cyan)"],
+ ["&#x1F91D;","CLOSES MTD",String(totCls),"mc-cls","var(--red)"],
+ ["&#x1F4C5;","SETS MTD",String(totSet),"mc-sets","var(--blue)"],
+ ["&#x1F3AF;","AVG REV / REP",fmt$(avgRev),"mc-avg","var(--green)"]
+].forEach(function(d){var c=el("div","mc "+d[3]);c.innerHTML="<div class='mc-lbl'>"+d[0]+" "+d[1]+"</div><div class='mc-val' style='color:"+d[4]+"'>"+d[2]+"</div>";$("metricCards").appendChild(c);});
+
+$("paceTitle").textContent=fmt$(totRev)+" of "+fmt$(DATA.goal);
+[[pct.toFixed(1)+"%","ATTAINED"],[dLeft,"DAYS LEFT"],[fmt$(needed),"REV / DAY NEEDED"]].forEach(function(d){$("paceStats").innerHTML+="<div><span class='ps-val'>"+d[0]+"</span><span class='ps-lbl'>"+d[1]+"</span></div>";});
+setTimeout(function(){$("paceFill").style.width=Math.min(pct,100)+"%";},150);
+
+[["35","REV","var(--cyan)"],["30","CLOSES","var(--red)"],["35","SETS","var(--blue)"]].forEach(function(d){var item=el("div","sk-item");item.innerHTML="<div class='sk-num' style='color:"+d[2]+"'>"+d[0]+"</div><div class='sk-lbl'>PTS<br>"+d[1]+"</div>";$("scoringKey").appendChild(item);});
+$("scoringKey").appendChild((function(){var n=el("div","sk-note");n.innerHTML="<div class='sk-note-text'>Score is relative<br>to top performer</div>";return n;})());
+
+(function(){
+  var sp=$("spotlight");
+  if(scoredActive.length===0){
+    sp.innerHTML="<div><div class='spotlight-label'>TOP PERFORMER</div><div class='spotlight-name' style='opacity:0.5'>Q2 STARTS TODAY</div><div class='spotlight-stat'>First posts incoming</div></div><div style='text-align:right'><div class='spotlight-score-val' style='opacity:0.4'>--</div><div class='spotlight-score-lbl'>TOP SCORE</div></div>";
+    return;
+  }
+  var top=scoredActive[0];
+  var tn="";TEAMS.forEach(function(t){if(t.members.indexOf(top.name)!==-1)tn=t.name;});
+  sp.innerHTML="<div><div class='spotlight-label'>&#9650; LEADING THE BOARD</div><div class='spotlight-name'>"+top.name+"</div><div class='spotlight-stat'>"+fmt$(top.rev)+" rev &middot; "+top.cls+" cls &middot; "+top.sets+" sets &middot; "+tn+"</div></div><div style='text-align:right'><div class='spotlight-score-val'>"+top.score+"</div><div class='spotlight-score-lbl'>TOP SCORE</div></div>";
+})();
+
+function actionGap(r,prev){
+  if(!prev)return null;
+  var g=prev.score-r.score;if(g<=0)return null;
+  var s=[];
+  if(mS>0){var gs=.35*(100/mS);if(gs>0){var n=Math.ceil(g/gs);if(n<=20)s.push(n+" more set"+(n!==1?"s":""));}}
+  if(mC>0){var gc=.30*(100/mC);if(gc>0){var nc=Math.ceil(g/gc);if(nc<=5)s.push(nc+" more close"+(nc!==1?"s":""));}}
+  if(mR>0){var gr=.35*(100/mR);if(gr>0){var nr=Math.ceil(g/gr);s.push(fmt$(nr)+" more rev");}}
+  if(s.length===0)return g+" pts gap";
+  return "Jump to #"+(scoredActive.indexOf(prev)+1)+": <em>"+s.slice(0,2).join(" or ")+"</em>";
+}
+
+var board=$("board");
+scoredActive.forEach(function(r,i){
+  var card=el("div","rep-card"+(i===0?" rank-1":i===1?" rank-2":i===2?" rank-3":""));
+  card.style.animationDelay=(i*.05)+"s";
+  var rk=rc(i);
+  var barC=i===0?"var(--cyan)":i===1?"var(--text-primary)":i===2?"var(--blue)":"#c8d2e8";
+  var pctBar=scoredActive[0].score>0?r.score/scoredActive[0].score*100:0;
+  var tn="";TEAMS.forEach(function(t){if(t.members.indexOf(r.name)!==-1)tn=t.name;});
+  var revTarget=KPI_REV_MONTH*(DATA.workDay/DATA.workDaysTotal);
+  var ok=revTarget>0&&r.rev/revTarget>=0.85;
+  var badge=ok?"<span class='rep-pace pace-on'>ON PACE</span>":"<span class='rep-pace pace-behind'>BEHIND</span>";
+  var gapHtml=i===0
+    ?"<div class='gap-leading'>&#9650; LEADING THE BOARD</div>"
+    :(function(){var prev=scoredActive[i-1];var pg=prev.score-r.score;var rg=prev.rev-r.rev;var act=actionGap(r,prev);return"<div class='gap-behind'>&#9650; "+pg+" pts to #"+i+" &middot; "+fmt$(rg)+" rev gap</div>"+(act?"<div class='gap-action'>"+act+"</div>":"");})();
+  card.innerHTML=
+    "<div class='rep-top'>"
+    +"<div class='rep-rank' style='color:"+rk+"'>"+(i+1)+"</div>"
+    +"<div><div class='rep-name'>"+r.name+badge+"</div><div class='rep-team'>"+tn+"</div></div>"
+    +"<div class='rep-score-col'><div class='rep-score' style='color:"+rk+"'>"+r.score+"</div><div class='rep-score-lbl'>SCORE</div></div>"
+    +"</div>"
+    +"<div class='rep-bar-wrap'><div class='rep-bar-bg'><div class='rep-bar-fg' style='width:"+pctBar+"%;background:"+barC+"'></div></div></div>"
+    +"<div class='rep-stats'>"
+    +"<div class='rep-stat'><div class='stat-val' style='color:var(--cyan)'>"+fmt$(r.rev)+"</div><div class='stat-lbl'>REVENUE</div></div>"
+    +"<div class='rep-stat'><div class='stat-val' style='color:var(--red)'>"+r.cls+"</div><div class='stat-lbl'>CLOSES</div></div>"
+    +"<div class='rep-stat'><div class='stat-val' style='color:var(--blue)'>"+r.sets+"</div><div class='stat-lbl'>SETS</div></div>"
+    +"<div class='rep-stat'><div class='stat-val'>"+(r.rpc?fmt$(r.rpc):"--")+"</div><div class='stat-lbl'>REV/CLOSE</div></div>"
+    +"<div class='rep-stat'><div class='stat-val'>"+fmtP(r.cr)+"</div><div class='stat-lbl'>CLOSE RATE</div></div>"
+    +"</div>"
+    +"<div class='rep-gap'>"+gapHtml+"</div>";
+  board.appendChild(card);
+});
+
+if(zeroReps.length>0){
+  var zh=el("div","zero-header");zh.textContent="NOT YET ON THE BOARD";board.appendChild(zh);
+  zeroReps.forEach(function(r,i){
+    var tn="";TEAMS.forEach(function(t){if(t.members.indexOf(r.name)!==-1)tn=t.name;});
+    var card=el("div","rep-card inactive");
+    card.style.animationDelay=((scoredActive.length+i)*.04)+"s";
+    card.innerHTML="<div class='rep-top'><div class='rep-rank' style='color:var(--text-dim)'>&mdash;</div><div><div class='rep-name' style='color:var(--text-dim)'>"+r.name+"</div><div class='rep-team'>"+tn+"</div></div><div class='rep-score-col'><div class='rep-score' style='color:var(--text-dim)'>0</div><div class='rep-score-lbl'>SCORE</div></div></div><div class='rep-inactive-msg'>No activity posted yet.<div class='rep-inactive-cta'>DIAL. BOOK. GET ON THE BOARD.</div></div>";
+    board.appendChild(card);
+  });
+}
+
+(function(){
+  var sec=$("teams");
+  var teams=TEAMS.map(function(t){
+    var mems=t.members.map(function(n){return repMap[n]||{name:n,rev:0,cls:0,sets:0,score:0};});
+    var n=mems.length;
+    var tR=mems.reduce(function(s,r){return s+r.rev;},0);
+    var tC=mems.reduce(function(s,r){return s+r.cls;},0);
+    var tS=mems.reduce(function(s,r){return s+r.sets;},0);
+    var tSc=mems.reduce(function(s,r){return s+r.score;},0);
+    return{name:t.name,members:mems,n:n,totRev:tR,totCls:tC,totSets:tS,
+      avgScore:n>0?Math.round(tSc/n*10)/10:0,
+      avgRev:n>0?Math.round(tR/n):0,
+      avgCls:n>0?Math.round(tC/n*10)/10:0,
+      avgSets:n>0?Math.round(tS/n*10)/10:0};
+  }).sort(function(a,b){return b.avgScore-a.avgScore||a.name.localeCompare(b.name);});
+  var maxSc=teams[0].avgScore||1;
+  var tt=el("div","ts-title");tt.textContent="TEAM STANDINGS — AVG SCORE PER REP";sec.appendChild(tt);
+  teams.forEach(function(t,i){
+    var c=rc(i);var pb=maxSc>0?t.avgScore/maxSc*100:0;
+    var card=el("div","ts-card");card.style.animationDelay=(i*.06)+"s";
+    if(i===0)card.style.borderLeftColor="var(--cyan)";
+    card.innerHTML="<div class='ts-rank' style='color:"+c+"'>"+(i+1)+"</div>"
+      +"<div><div class='ts-name'>"+t.name+"</div><div class='ts-meta'>"+t.n+" rep"+(t.n!==1?"s":"")+"</div>"
+      +"<div class='ts-avgs'><div><div class='ts-avg-val'>"+fmt$(t.avgRev)+"</div><div class='ts-avg-lbl'>AVG REV</div></div>"
+      +"<div><div class='ts-avg-val'>"+t.avgCls+"</div><div class='ts-avg-lbl'>AVG CLS</div></div>"
+      +"<div><div class='ts-avg-val'>"+t.avgSets+"</div><div class='ts-avg-lbl'>AVG SETS</div></div></div></div>"
+      +"<div><div class='ts-score' style='color:"+c+"'>"+t.avgScore+"</div><div class='ts-score-lbl'>AVG SCORE</div></div>"
+      +"<div class='ts-bar-row'><div class='ts-bar-bg'><div class='ts-bar-fg' style='width:0%;background:"+c+"' data-w='"+pb+"'></div></div></div>";
+    sec.appendChild(card);
+  });
+  setTimeout(function(){document.querySelectorAll(".ts-bar-fg").forEach(function(b){b.style.width=b.getAttribute("data-w")+"%";b.style.transition="width .9s ease";});},200);
+  var dt=el("div","team-detail-title");dt.textContent="TEAM BREAKDOWN — TOTALS & MEMBER DETAIL";sec.appendChild(dt);
+  teams.forEach(function(t,i){
+    var c=rc(i);var card=el("div","tc");card.style.animationDelay=(i*.07)+"s";
+    var mems=t.members.slice().sort(function(a,b){return b.score-a.score;});
+    var mh=mems.map(function(r){return"<div class='tc-member'><div class='tc-m-name'>"+r.name+"</div><div class='tc-m-stats'>"+fmt$(r.rev)+" &middot; "+r.cls+" cls &middot; "+r.sets+" sets</div><div class='tc-m-score'>"+r.score+"<span class='tc-m-score-lbl'>pts</span></div></div>";}).join("");
+    card.innerHTML="<div class='tc-head'><div><div class='tc-title' style='color:"+c+"'>#"+(i+1)+" "+t.name+"</div><div class='tc-badge'>"+t.n+" REP"+(t.n!==1?"S":"")+" &middot; AVG SCORE "+t.avgScore+"</div></div>"
+      +"<div class='tc-totals'><div><span class='tc-tot-val'>"+fmt$(t.totRev)+"</span><span class='tc-tot-lbl'>TOTAL REV</span></div>"
+      +"<div><span class='tc-tot-val'>"+t.totCls+"</span><span class='tc-tot-lbl'>TOTAL CLS</span></div>"
+      +"<div><span class='tc-tot-val'>"+t.totSets+"</span><span class='tc-tot-lbl'>TOTAL SETS</span></div></div></div>"
+      +"<div class='tc-avgs-row'><div class='tc-avg-cell'><div class='tc-avg-val'>"+fmt$(t.avgRev)+"</div><div class='tc-avg-lbl'>AVG REV/REP</div></div>"
+      +"<div class='tc-avg-cell'><div class='tc-avg-val'>"+t.avgCls+"</div><div class='tc-avg-lbl'>AVG CLS/REP</div></div>"
+      +"<div class='tc-avg-cell'><div class='tc-avg-val'>"+t.avgSets+"</div><div class='tc-avg-lbl'>AVG SETS/REP</div></div></div>"
+      +"<div>"+mh+"</div>";
+    sec.appendChild(card);
+  });
+})();
+
+$("howtowin").innerHTML=
+  "<div class='htw-hero'>"
+  +"<div class='htw-hero-eye'>THE PLAYBOOK &mdash; Q2 2026</div>"
+  +"<div class='htw-hero-title'>YOU DON&#39;T CLIMB THE BOARD<br>BY <span>ACCIDENT.</span></div>"
+  +"<div class='htw-hero-sub'>Every number on this leaderboard is earned. Here&#39;s exactly how your score is built &mdash; and how to blow past the person above you. $1.25M is the goal. Dial. Book. Close. Win.</div>"
+  +"</div>"
+  +"<div class='htw-cards'>"
+  +"<div class='htw-card' style='border-top-color:var(--cyan)'><div class='htw-card-weight' style='color:var(--cyan)'>35</div><div class='htw-card-label'>POINTS &mdash; REVENUE</div><div class='htw-card-tip'><strong>&#x1F4B0; The output that matters.</strong>Revenue closes the loop. A big deal launches you up the board in a single day. Equal weight with Sets &mdash; earn it end to end.</div></div>"
+  +"<div class='htw-card' style='border-top-color:var(--red)'><div class='htw-card-weight' style='color:var(--red)'>30</div><div class='htw-card-label'>POINTS &mdash; CLOSES</div><div class='htw-card-tip'><strong>&#x1F91D; Volume wins over time.</strong>Every close stacks your score. Two closes beats one close &mdash; every time. Stack them up.</div></div>"
+  +"<div class='htw-card' style='border-top-color:var(--blue)'><div class='htw-card-weight' style='color:var(--blue)'>35</div><div class='htw-card-label'>POINTS &mdash; SETS</div><div class='htw-card-tip'><strong>&#x1F4C5; Equal to revenue.</strong>Fill the pipeline every single day. Reps stacking 25+ sets climb the board whether they&#39;ve closed or not. Post every one.</div></div>"
+  +"</div>"
+  +"<div class='htw-rule'><div class='htw-rule-title'>&#x1F4D0; How the Score Works</div><div class='htw-rule-body'>Your score is <strong>relative to the top performer</strong> in each category. If the leader has $50K and you have $25K, you score half their revenue points. Same math for closes and sets.<br><br>The board <strong>shifts every single day.</strong> Someone closes tonight and they jump you. You post five sets and you creep up. Nothing locks in until the month ends.</div></div>"
+  +"<div class='htw-example'><div class='htw-example-title'>LIVE SCORE BREAKDOWN &mdash; TODAY&#39;S DATA</div>"
+  +(scoredActive.length>0?scoredActive.slice(0,4).map(function(r){return"<div class='htw-ex-row'><div class='htw-ex-name'>"+r.name+"</div><div class='htw-ex-stats'>"+fmt$(r.rev)+" &middot; "+r.cls+" cls &middot; "+r.sets+" sets</div><div class='htw-ex-score'>"+r.score+" pts</div></div>";}).join(""):"<div style='padding:10px 0;color:var(--text-dim)'>Board opens today &mdash; first scores incoming.</div>")
+  +"</div>"
+  +"<div class='htw-rule'><div class='htw-rule-title'>&#x26A1; The Fastest Ways to Move Up</div><div class='htw-rule-body'>"
+  +"<strong>1. Check your action gap.</strong> Every rep card shows exactly what you need to jump to the next rank. That&#39;s your target for today.<br><br>"
+  +"<strong>2. A close moves two levers.</strong> Revenue AND closes both go up. One close is the most efficient score move on the board.<br><br>"
+  +"<strong>3. Sets are free points.</strong> They cost nothing but time. Reps not posting sets leave 35% of their score on the table every day.<br><br>"
+  +"<strong>4. Your pace badge doesn&#39;t lie.</strong> ON PACE means you&#39;re on track. BEHIND means step it up &mdash; today, not tomorrow."
+  +"</div></div>"
+  +"<div class='htw-cta'><div class='htw-cta-title'>$1,250,000. <span>"+(DATA.workDaysTotal-DATA.workDay)+" WORK DAYS.</span></div>"
+  +"<div class='htw-cta-body'>March proved what this team can do. $1M in the books. Now we raise the standard. The reps who win Q2 aren&#39;t the ones who wait for momentum &mdash; they create it. What are you doing today?</div></div>";
+
+$("footerL").textContent="UPDATED DAILY — SDR TEAM — "+DATA.month.toUpperCase();
+</script>
+</body>
+</html>
