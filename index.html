@@ -273,32 +273,33 @@ h1 span{color:var(--cyan);}
 
 <script>
 var DATA = {
-  month:"April 2026", workDay:8, workDaysTotal:22, goal:1250000,
-  updatedAt:"Thu Apr 10, 2026",
+  month:"April 2026", workDay:10, workDaysTotal:22, goal:1250000,
+  updatedAt:"Mon Apr 13, 2026",
   reps:[
-    {name:"Kenny",               rev:100000, cls:6,  sets:10, cc:0},
-    {name:"Gloria",              rev:88000,  cls:7,  sets:30, cc:0},
-    {name:"Jesse Saunders",      rev:44000,  cls:7,  sets:35, cc:0},
-    {name:"Daniel Jordan",       rev:31500,  cls:3,  sets:15, cc:0},
+    {name:"Kenny",               rev:140000, cls:8,  sets:10, cc:0},
+    {name:"Gloria",              rev:96000,  cls:8,  sets:36, cc:0},
+    {name:"Jesse Saunders",      rev:44000,  cls:7,  sets:43, cc:0},
+    {name:"Daniel Jordan",       rev:42000,  cls:4,  sets:17, cc:0},
+    {name:"Brent Jackman",       rev:21000,  cls:2,  sets:14, cc:0},
     {name:"Paolo Kuizon",        rev:18400,  cls:2,  sets:18, cc:0},
-    {name:"Brent Jackman",       rev:21000,  cls:2,  sets:12, cc:0},
-    {name:"Shane Calhoun",       rev:11000,  cls:1,  sets:13, cc:0},
-    {name:"Samuel Michalcin",    rev:10000,  cls:1,  sets:8,  cc:0},
-    {name:"Caroline",            rev:9200,   cls:1,  sets:8,  cc:0},
-    {name:"Petros Foustanellas", rev:6600,   cls:1,  sets:14, cc:0},
-    {name:"Shivang Kapoor",      rev:4000,   cls:1,  sets:23, cc:0},
+    {name:"Petros Foustanellas", rev:12600,  cls:2,  sets:15, cc:0},
+    {name:"Shane Calhoun",       rev:11000,  cls:1,  sets:15, cc:0},
+    {name:"Samuel Michalcin",    rev:10000,  cls:1,  sets:9,  cc:0},
+    {name:"Caroline",            rev:9200,   cls:1,  sets:11, cc:0},
+    {name:"Shivang Kapoor",      rev:4000,   cls:1,  sets:26, cc:0},
     {name:"Jose Bernal",         rev:2000,   cls:1,  sets:3,  cc:0},
-    {name:"Alex Arochi",         rev:0,      cls:0,  sets:18, cc:0},
-    {name:"Angelo Stringfellow", rev:0,      cls:0,  sets:15, cc:0},
+    {name:"Alex Arochi",         rev:0,      cls:0,  sets:24, cc:0},
+    {name:"Angelo Stringfellow", rev:0,      cls:0,  sets:18, cc:0},
+    {name:"TJ Miller",           rev:0,      cls:0,  sets:10, cc:0},
     {name:"Sofia Gonzalez",      rev:0,      cls:0,  sets:12, cc:0},
-    {name:"TJ Miller",           rev:0,      cls:0,  sets:9,  cc:0},
-    {name:"Songo",               rev:0,      cls:0,  sets:8,  cc:0},
-    {name:"Suraj Bali",          rev:0,      cls:0,  sets:6,  cc:0},
-    {name:"Ian Hukom",           rev:0,      cls:0,  sets:6,  cc:0},
+    {name:"Songo",               rev:0,      cls:0,  sets:9,  cc:0},
+    {name:"Suraj Bali",          rev:0,      cls:0,  sets:7,  cc:0},
+    {name:"Ian Hukom",           rev:0,      cls:0,  sets:7,  cc:0},
     {name:"Tom",                 rev:0,      cls:0,  sets:4,  cc:0},
     {name:"Harvey",              rev:0,      cls:0,  sets:0,  cc:0},
     {name:"Saray Cortes",        rev:0,      cls:0,  sets:0,  cc:0},
-    {name:"Dante N",             rev:0,      cls:0,  sets:0,  cc:0}
+    {name:"Dante N",             rev:0,      cls:0,  sets:0,  cc:0},
+    {name:"_Emery",              rev:15000,  cls:1,  sets:0,  cc:0, hidden:true}
   ]
 };
 var TEAMS=[
@@ -323,19 +324,19 @@ var RC=["var(--cyan)","var(--text-primary)","var(--blue)"];
 function rc(i){return i<RC.length?RC[i]:"var(--text-dim)";}
 function show(id,btn){document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on");});document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});$(id).classList.add("on");btn.classList.add("on");}
 
-var active=DATA.reps.filter(function(r){return r.rev>0||r.cls>0||r.sets>0;});
+var active=DATA.reps.filter(function(r){return !r.hidden&&(r.rev>0||r.cls>0||r.sets>0);});
 var mR=Math.max.apply(null,active.map(function(r){return r.rev;}).concat([1]));
 var mC=Math.max.apply(null,active.map(function(r){return r.cls;}).concat([1]));
 var mS=Math.max.apply(null,active.map(function(r){return r.sets;}).concat([1]));
 function calcScore(r){return Math.round((r.rev/mR*100)*.35+(r.cls/mC*100)*.30+(r.sets/mS*100)*.35);}
 var scoredActive=active.map(function(r){return{name:r.name,rev:r.rev,cls:r.cls,sets:r.sets,score:calcScore(r),rpc:r.cls>0?Math.round(r.rev/r.cls):null,cr:r.sets>0?r.cls/r.sets*100:null};}).sort(function(a,b){return b.score-a.score||a.name.localeCompare(b.name);});
-var zeroReps=DATA.reps.filter(function(r){return r.rev===0&&r.cls===0&&r.sets===0;});
+var zeroReps=DATA.reps.filter(function(r){return !r.hidden&&r.rev===0&&r.cls===0&&r.sets===0;});
 var repMap={};
 scoredActive.forEach(function(r){repMap[r.name]=r;});
-zeroReps.forEach(function(r){repMap[r.name]={name:r.name,rev:0,cls:0,sets:0,score:0};});
-var totRev=scoredActive.reduce(function(s,r){return s+r.rev;},0);
-var totCls=scoredActive.reduce(function(s,r){return s+r.cls;},0);
-var totSet=scoredActive.reduce(function(s,r){return s+r.sets;},0);
+zeroReps.forEach(function(r){repMap[r.name]={name:r.name,rev:0,cls:0,sets:0,score:0};});DATA.reps.filter(function(r){return r.hidden;}).forEach(function(r){repMap[r.name]={name:r.name,rev:r.rev,cls:r.cls,sets:r.sets,score:0,hidden:true};});
+var totRev=DATA.reps.reduce(function(s,r){return s+r.rev;},0);
+var totCls=DATA.reps.reduce(function(s,r){return s+r.cls;},0);
+var totSet=DATA.reps.reduce(function(s,r){return s+r.sets;},0);
 var pct=totRev/DATA.goal*100;
 var dLeft=DATA.workDaysTotal-DATA.workDay;
 var needed=dLeft>0?Math.ceil((DATA.goal-totRev)/dLeft):0;
